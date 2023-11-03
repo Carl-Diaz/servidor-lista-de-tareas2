@@ -4,6 +4,20 @@ const port = 8080;
 
 app.use(express.json());
 
+// Middleware para validar métodos HTTP
+app.use((req, res, next) => {
+  if (
+    req.method !== "GET" &&
+    req.method !== "POST" &&
+    req.method !== "PUT" &&
+    req.method !== "DELETE"
+  ) {
+    res.status(400).json({ error: "Método HTTP no válido" });
+  } else {
+    next();
+  }
+});
+
 const listViewRouter = require("./Routers/list-view-router");
 const listEditRouter = require("./Routers/list-edit-router");
 

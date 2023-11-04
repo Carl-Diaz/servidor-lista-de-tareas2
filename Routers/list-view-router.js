@@ -6,7 +6,7 @@ const router = express.Router();
 const validationTasks = (req, res, next) => {
   const validationById = req.params.id;
   if (!tasks.some((task) => task.id === parseInt(validationById))) {
-    res.json({ error: "ID no valido" });
+    res.status(404).json({ error: "ID no valido" });
   } else {
     next();
   }

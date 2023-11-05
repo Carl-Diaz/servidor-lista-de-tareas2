@@ -13,7 +13,6 @@ const users = [
   { username: "user4", password: "password4" },
 ];
 
-// Ruta de autenticación (login)
 router.post("/", (req, res) => {
   const { username, password } = req.body;
 
@@ -25,15 +24,14 @@ router.post("/", (req, res) => {
     return res.status(401).json({ message: "Credenciales incorrectas" });
   }
 
-  const currentTime = Math.floor(Date.now() / 10000); // 10000 milisegundos = 10 segundos
-  const tokenPayload = {
-    id: user.id,
-    username: user.username,
-    iat: currentTime,
-  };
-  const token = jwt.sign(tokenPayload, process.env.JWT_SECRET);
+  const token = jwt.sign(
+    { id: user.id, username: user.username },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "1h", // Expiración del token: 1 hora
+    }
+  );
 
   res.json({ token });
 });
-
 module.exports = router;

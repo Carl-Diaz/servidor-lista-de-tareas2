@@ -18,11 +18,11 @@ function verifyToken(req, res, next) {
       return res.status(401).json({ message: "Token inválido" });
     }
 
-    const currentTime = Math.floor(Date.now() / 3600); // Tiempo actual en segundos (1h)
+    const currentTime = Math.floor(Date.now() / 1000); // Tiempo actual en segundos
 
     // Verifica que el token sea válido y que la marca de tiempo sea reciente
     if (decoded.iat > currentTime - 3600) {
-      // Considera válido si es de la ultima hora
+      // Considera válido si es de la última hora
       req.user = decoded;
       next();
     } else {
@@ -33,7 +33,7 @@ function verifyToken(req, res, next) {
 
 // Ruta protegida
 router.get("/", verifyToken, (req, res) => {
-  res.json({ message: "Mostrando ruta protegida", user: req.user });
+  res.json({ message: "Ruta protegida alcanzada", user: req.user });
 });
 
 module.exports = router;
